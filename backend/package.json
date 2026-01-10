@@ -1,0 +1,21 @@
+{
+  "name": "miss-excellence-backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Backend API for Miss Excellence (Node.js + Express)",
+  "scripts": {
+    "dev": "yarn node --watch server.js",
+    "start": "yarn node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "helmet": "^7.1.0",
+    "mongoose": "^9.1.1",
+    "morgan": "^1.10.0",
+    "multer": "^2.0.2",
+    "zod": "^3.23.8"
+  }
+}

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <defs>
+    <linearGradient id="g" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9D6CFF" stop-opacity="0.24"/>
+      <stop offset="0.55" stop-color="#ffffff" stop-opacity="0.72"/>
+      <stop offset="1" stop-color="#45F6B9" stop-opacity="0.2"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#g)"/>
+  <path d="M0 520 C220 430, 420 640, 640 540 C860 440, 980 610, 1200 520 L1200 675 L0 675 Z" fill="#0B0B18" opacity="0.06"/>
+  <rect x="70" y="70" width="1060" height="535" rx="32" fill="#ffffff" opacity="0.55"/>
+  <text x="110" y="220" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial" font-size="54" font-weight="800" fill="#0B0B18">Conférences régionales</text>
+  <text x="110" y="290" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial" font-size="28" font-weight="600" fill="#0B0B18" opacity="0.7">Cohésion sociale • Leadership féminin</text>
+  <text x="110" y="380" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial" font-size="24" fill="#0B0B18" opacity="0.65">Universités, écoles, centres culturels — débat & actions concrètes.</text>
+</svg>
+
+

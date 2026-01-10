@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="360" viewBox="0 0 980 360">
+  <!-- Chosen logo style: black on transparent (matches our light UI) -->
+  <defs>
+    <style>
+      .ink { fill: #0B0B18; }
+      .text { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; font-weight: 800; letter-spacing: -0.02em; }
+    </style>
+  </defs>
+
+  <!-- Minimal modern mark inspired by the provided black logo (vector-safe, lightweight) -->
+  <g transform="translate(80,40)" class="ink">
+    <!-- crown/halo petals -->
+    <path d="M120 10 C95 45, 90 85, 104 120 C72 98, 50 70, 42 40 C68 28, 95 18, 120 10 Z"/>
+    <path d="M150 0 C148 48, 160 92, 186 122 C154 112, 126 88, 118 54 C126 34, 138 16, 150 0 Z"/>
+    <path d="M182 12 C206 44, 216 84, 204 120 C236 98, 258 70, 266 40 C240 28, 210 18, 182 12 Z"/>
+    <!-- central silhouette (abstract) -->
+    <path d="M150 70
+             C138 74, 132 86, 136 98
+             C140 112, 152 120, 166 118
+             C176 116, 184 108, 186 98
+             C190 82, 178 70, 162 70
+             C176 64, 184 52, 182 40
+             C180 28, 168 20, 156 22
+             C144 24, 136 36, 140 48
+             C142 56, 146 62, 150 70 Z"/>
+    <!-- pedestal -->
+    <path d="M140 122 C130 156, 120 190, 116 230 C112 274, 130 292, 170 292
+             L170 312 L110 312 C74 312, 54 290, 58 246
+             C64 186, 92 132, 140 122 Z"/>
+  </g>
+
+  <!-- Wordmark -->
+  <g class="ink" transform="translate(360,118)">
+    <text class="text" x="0" y="70" font-size="86">MISS</text>
+    <text class="text" x="0" y="150" font-size="86">EXCELLENCE</text>
+  </g>
+</svg>
+
+
