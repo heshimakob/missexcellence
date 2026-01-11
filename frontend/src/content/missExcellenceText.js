@@ -133,7 +133,7 @@ export const missExcellenceText = {
   contact: {
     title: "Contactez-nous",
     subtitle:
-      "Presse, candidatures, coordination, partenariats: écrivez-nous via le formulaire ci-dessous.",
+      "Presse, candidatures, coordination, partenariats: écrivez-nous. (Le formulaire est prêt à être connecté au backend.)",
     emails: [
       "direction@missexcellence.org",
       "coordination@missexcellence.org",
