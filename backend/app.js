@@ -16,7 +16,20 @@ export function createApp() {
 
   app.disable("x-powered-by");
 
-  app.use(helmet());
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'"],
+          imgSrc: ["'self'", "data:", "http://localhost:3000", "https:"],
+          scriptSrc: ["'self'"],
+          styleSrc: ["'self'", "'unsafe-inline'", "https:"],
+          fontSrc: ["'self'", "https:", "data:"],
+        },
+      },
+      crossOriginResourcePolicy: { policy: "cross-origin" },
+    }),
+  );
   app.use(
     cors({
       origin: env.FRONTEND_ORIGIN,

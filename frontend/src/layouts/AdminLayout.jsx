@@ -50,7 +50,7 @@ export function AdminLayout() {
             <AdminNavItem to="/admin/cms/partners" label="CMS — Partenariats" />
             <AdminNavItem to="/admin/cms/contact" label="CMS — Contact" />
             <AdminNavItem to="/admin/cms/news" label="CMS — Actualités" />
-            <AdminNavItem to="/admin/cms/blog" label="CMS — Blog" />
+            <AdminNavItem to="/admin/cms/binti" label="CMS — Binti" />
           </nav>
         </aside>
 

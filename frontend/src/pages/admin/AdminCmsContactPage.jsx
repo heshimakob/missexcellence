@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Plus, Edit, Trash2 } from "lucide-react";
+import { Plus, Edit, Trash2, Mail, CheckCircle, Circle } from "lucide-react";
 
 import { adminFetch } from "../../lib/adminApi.js";
 import { Badge } from "../../ui/Badge.jsx";
@@ -12,6 +12,9 @@ export function AdminCmsContactPage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
   const [modal, setModal] = useState({ type: null, item: null, index: null });
+  const [messages, setMessages] = useState([]);
+  const [messagesLoading, setMessagesLoading] = useState(true);
+  const [selectedMessage, setSelectedMessage] = useState(null);
 
   useEffect(() => {
     let alive = true;
@@ -23,6 +26,42 @@ export function AdminCmsContactPage() {
       alive = false;
     };
   }, []);
+
+  async function refreshMessages() {
+    setMessagesLoading(true);
+    try {
+      const d = await adminFetch("/api/admin/cms/contact/messages");
+      setMessages(d.messages ?? []);
+    } catch (e) {
+      setError(e.message || "Erreur lors du chargement des messages");
+    } finally {
+      setMessagesLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    refreshMessages();
+  }, []);
+
+  async function handleMarkAsRead(id) {
+    try {
+      await adminFetch(`/api/admin/cms/contact/messages/${id}`, { method: "PATCH", body: JSON.stringify({ read: true }) });
+      await refreshMessages();
+    } catch (e) {
+      setError(e.message || "Erreur");
+    }
+  }
+
+  async function handleDeleteMessage(id) {
+    if (!confirm("Supprimer ce message ?")) return;
+    try {
+      await adminFetch(`/api/admin/cms/contact/messages/${id}`, { method: "DELETE" });
+      await refreshMessages();
+      if (selectedMessage?.id === id) setSelectedMessage(null);
+    } catch (e) {
+      setError(e.message || "Erreur");
+    }
+  }
 
   const contact = useMemo(
     () => content?.contact ?? { title: "", subtitle: "", emails: [] },
@@ -115,6 +154,103 @@ export function AdminCmsContactPage() {
             ) : null}
           </div>
         </div>
+      </Card>
+
+      {/* Messages de contact */}
+      <Card className="grid gap-3">
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="text-sm font-semibold">Messages reçus</div>
+            <div className="mt-1 text-xs text-ink-900/60">
+              {messages.length} message{messages.length > 1 ? "s" : ""} ({messages.filter((m) => !m.read).length} non lu{messages.filter((m) => !m.read).length > 1 ? "s" : ""})
+            </div>
+          </div>
+          <Button variant="secondary" size="sm" onClick={refreshMessages} disabled={messagesLoading}>
+            {messagesLoading ? "Chargement…" : "Actualiser"}
+          </Button>
+        </div>
+
+        {messagesLoading ? (
+          <div className="py-8 text-center text-sm text-ink-900/60">Chargement des messages…</div>
+        ) : messages.length === 0 ? (
+          <div className="py-8 text-center text-sm text-ink-900/60">Aucun message pour le moment.</div>
+        ) : (
+          <div className="grid gap-3 md:grid-cols-2">
+            <div className="max-h-[600px] space-y-2 overflow-y-auto">
+              {messages.map((msg) => (
+                <div
+                  key={msg.id}
+                  className={`cursor-pointer rounded-xl border p-3 transition-colors ${
+                    selectedMessage?.id === msg.id
+                      ? "border-neon-500 bg-neon-500/10"
+                      : msg.read
+                        ? "border-black/10 bg-white/70"
+                        : "border-neon-500/50 bg-neon-500/5"
+                  }`}
+                  onClick={() => setSelectedMessage(msg)}
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        {msg.read ? (
+                          <Circle className="size-3 text-ink-900/30 flex-shrink-0" />
+                        ) : (
+                          <div className="size-3 rounded-full bg-neon-500 flex-shrink-0" />
+                        )}
+                        <div className={`text-sm font-semibold truncate ${msg.read ? "text-ink-900/70" : "text-ink-900"}`}>
+                          {msg.name}
+                        </div>
+                      </div>
+                      <div className="mt-1 text-xs text-ink-900/60 truncate">{msg.subject}</div>
+                      <div className="mt-1 text-xs text-ink-900/40">{new Date(msg.createdAt).toLocaleDateString("fr-FR")}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {selectedMessage ? (
+              <Card>
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1">
+                    <div className="text-sm font-semibold">{selectedMessage.subject}</div>
+                    <div className="mt-1 text-xs text-ink-900/60">
+                      De: {selectedMessage.name} ({selectedMessage.email})
+                    </div>
+                    <div className="mt-1 text-xs text-ink-900/40">
+                      {new Date(selectedMessage.createdAt).toLocaleString("fr-FR")}
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    {!selectedMessage.read && (
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={() => handleMarkAsRead(selectedMessage.id)}
+                      >
+                        <CheckCircle className="size-4" /> Marquer lu
+                      </Button>
+                    )}
+                    <Button variant="ghost" size="sm" onClick={() => handleDeleteMessage(selectedMessage.id)}>
+                      <Trash2 className="size-4" />
+                    </Button>
+                  </div>
+                </div>
+                <div className="mt-4 rounded-xl border border-black/10 bg-white/60 p-4">
+                  <div className="text-xs font-semibold text-ink-900/60 mb-2">Message</div>
+                  <div className="text-sm text-ink-900/80 whitespace-pre-wrap">{selectedMessage.message}</div>
+                </div>
+              </Card>
+            ) : (
+              <Card className="flex items-center justify-center min-h-[200px]">
+                <div className="text-center text-sm text-ink-900/60">
+                  <Mail className="size-8 mx-auto mb-2 text-ink-900/30" />
+                  Sélectionnez un message pour le lire
+                </div>
+              </Card>
+            )}
+          </div>
+        )}
       </Card>
 
       {modal.type === "email" ? (

@@ -9,7 +9,7 @@ import { Button } from "./Button.jsx";
 const NAV = [
   { label: "Home", href: "/" },
   { label: "Actualités", href: "/actualites" },
-  { label: "Blog", href: "/blog" },
+  { label: "Binti", href: "/binti" },
   { label: "Délégations", href: "/delegations" },
   { label: "Le concours", href: "/concours" },
   { label: "Partenariats", href: "/partenariats" },
@@ -63,11 +63,11 @@ export function SiteHeader() {
           </nav>
 
           <div className="flex items-center gap-2">
-            <div className="hidden md:block">
+            {/* <div className="hidden md:block">
               <Button variant="secondary" onClick={() => navigate("/admin")}>
                 Backoffice
               </Button>
-            </div>
+            </div> */}
             <button
               className="inline-flex items-center justify-center rounded-xl border border-black/10 bg-white/70 p-2 text-ink-900/80 hover:bg-white md:hidden"
               onClick={() => setOpen((v) => !v)}
@@ -98,9 +98,9 @@ export function SiteHeader() {
                   {item.label}
                 </NavLink>
               ))}
-              <Button className="mt-2 w-full" variant="secondary" onClick={() => navigate("/admin")}>
+              {/* <Button className="mt-2 w-full" variant="secondary" onClick={() => navigate("/admin")}>
                 Backoffice
-              </Button>
+              </Button> */}
             </div>
           </Container>
         </div>

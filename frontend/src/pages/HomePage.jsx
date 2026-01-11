@@ -35,13 +35,13 @@ export function HomePage() {
   const heroCtas = useMemo(() => resolved.home.ctas, [resolved]);
   const miss2025Gallery = [
     { src: "/media/miss-2025/IMG_4538.JPEG", alt: "Intervention Miss Excellence 2025", caption: "Moment d’éloquence" },
-    { src: "/media/miss-2025/IMG_4539.JPEG", alt: "Intervention Miss Excellence 2025 (2)", caption: "Prise de parole" },
+    { src: "/media/miss-2025/IMG_4526.JPEG", alt: "Intervention Miss Excellence 2025 (2)", caption: "Prise de parole" },
     { src: "/media/miss-2025/IMG_4537.JPEG", alt: "Défilé Miss Excellence 2025", caption: "Défilé soirée" },
     { src: "/media/miss-2025/IMG_4525.JPEG", alt: "Sourire Miss Excellence 2025", caption: "Présence scénique" },
   ];
 
   function resolveImage(url) {
-    if (!url) return null;
+    if (!url) return "";
     if (/^https?:\/\//i.test(url)) return url;
     return apiUrl(url);
   }
@@ -259,10 +259,13 @@ export function HomePage() {
                       alt={n.title}
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                       loading="lazy"
+                      onError={(e) => {
+                        e.target.style.display = "none";
+                        e.target.nextElementSibling?.classList.remove("hidden");
+                      }}
                     />
-                  ) : (
-                    <div className="h-full w-full bg-gradient-to-tr from-neon-500/15 via-white/50 to-orchid-500/15" />
-                  )}
+                  ) : null}
+                  <div className={`h-full w-full bg-gradient-to-tr from-neon-500/15 via-white/50 to-orchid-500/15 ${n.imageUrl ? "hidden" : ""}`} />
                   <div className="absolute inset-0 bg-gradient-to-t from-white/70 via-white/10 to-transparent" />
                   <div className="absolute left-4 top-4 flex items-center gap-2">
                     <Badge className="bg-white/80">{n.tag}</Badge>
@@ -288,6 +291,46 @@ export function HomePage() {
               Voir toutes les actualités <ArrowRight className="size-4" />
             </Button>
           </Link>
+        </Container>
+      </section>
+
+      <section className="py-12">
+        <Container>
+          <SectionHeading
+            eyebrow="Partenaires"
+            title="Nos partenaires"
+            subtitle=""
+          />
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-8 md:gap-12">
+            <motion.img
+              src="/media/pat1.jpeg"
+              alt="Partenaire 1"
+              className="h-16 w-auto object-contain opacity-70 transition-opacity hover:opacity-100 md:h-20"
+              animate={{
+                y: [0, -10, 0],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 0,
+              }}
+            />
+            <motion.img
+              src="/media/pat2.jpeg"
+              alt="Partenaire 2"
+              className="h-16 w-auto object-contain opacity-70 transition-opacity hover:opacity-100 md:h-20"
+              animate={{
+                y: [0, -10, 0],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 1.5,
+              }}
+            />
+          </div>
         </Container>
       </section>
     </div>

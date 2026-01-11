@@ -6,8 +6,7 @@ import { AdminLayout } from "./layouts/AdminLayout.jsx";
 import { HomePage } from "./pages/HomePage.jsx";
 import { NewsPage } from "./pages/NewsPage.jsx";
 import { NewsArticlePage } from "./pages/NewsArticlePage.jsx";
-import { BlogPage } from "./pages/BlogPage.jsx";
-import { BlogPostPage } from "./pages/BlogPostPage.jsx";
+import { BintiPage } from "./pages/BintiPage.jsx";
 import { DelegationsPage } from "./pages/DelegationsPage.jsx";
 import { ContestPage } from "./pages/ContestPage.jsx";
 import { PartnersPage } from "./pages/PartnersPage.jsx";
@@ -19,7 +18,7 @@ import { AdminDashboardPage } from "./pages/admin/AdminDashboardPage.jsx";
 import { AdminHomeContentPage } from "./pages/admin/AdminHomeContentPage.jsx";
 import { AdminCmsSitePage } from "./pages/admin/AdminCmsSitePage.jsx";
 import { AdminCmsNewsPage } from "./pages/admin/AdminCmsNewsPage.jsx";
-import { AdminCmsBlogPage } from "./pages/admin/AdminCmsBlogPage.jsx";
+import { AdminCmsBintiPage } from "./pages/admin/AdminCmsBintiPage.jsx";
 import { AdminCmsContestPage } from "./pages/admin/AdminCmsContestPage.jsx";
 import { AdminCmsDelegationsPage } from "./pages/admin/AdminCmsDelegationsPage.jsx";
 import { AdminCmsPartnersPage } from "./pages/admin/AdminCmsPartnersPage.jsx";
@@ -34,8 +33,7 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/actualites" element={<NewsPage />} />
         <Route path="/actualites/:slug" element={<NewsArticlePage />} />
-        <Route path="/blog" element={<BlogPage />} />
-        <Route path="/blog/:slug" element={<BlogPostPage />} />
+        <Route path="/binti" element={<BintiPage />} />
         <Route path="/delegations" element={<DelegationsPage />} />
         <Route path="/concours" element={<ContestPage />} />
         <Route path="/partenariats" element={<PartnersPage />} />
@@ -60,7 +58,7 @@ export default function App() {
         <Route path="cms/partners" element={<AdminCmsPartnersPage />} />
         <Route path="cms/contact" element={<AdminCmsContactPage />} />
         <Route path="cms/news" element={<AdminCmsNewsPage />} />
-        <Route path="cms/blog" element={<AdminCmsBlogPage />} />
+        <Route path="cms/binti" element={<AdminCmsBintiPage />} />
       </Route>
 
       <Route path="/admin/*" element={<Navigate to="/admin" replace />} />

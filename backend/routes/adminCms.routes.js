@@ -8,7 +8,8 @@ import { requireAdminAuth } from "../middlewares/requireAdminAuth.js";
 import { getAdminSiteContent, putAdminSiteContent } from "../controllers/siteContent.controller.js";
 import { AppError } from "../shared/errors/AppError.js";
 import { adminCreateNews, adminDeleteNews, adminUpdateNews, listNewsAsync } from "../services/news.service.js";
-import { adminCreateBlog, adminDeleteBlog, adminUpdateBlog, listBlogPostsAsync } from "../services/blogMongo.service.js";
+import { adminCreateBinti, adminDeleteBinti, adminUpdateBinti, listBintiPostsAsync } from "../services/bintiMongo.service.js";
+import { getContactMessages, patchContactMessage, deleteContactMessageHandler } from "../controllers/contactAdmin.controller.js";
 
 export const adminCmsRouter = Router();
 
@@ -69,34 +70,39 @@ adminCmsRouter.delete("/news/:id", async (req, res, next) => {
   }
 });
 
-// Blog CRUD
-adminCmsRouter.get("/blog", async (_req, res) => res.json({ posts: await listBlogPostsAsync() }));
-adminCmsRouter.post("/blog", async (req, res, next) => {
+// Binti CRUD
+adminCmsRouter.get("/binti", async (_req, res) => res.json({ posts: await listBintiPostsAsync() }));
+adminCmsRouter.post("/binti", async (req, res, next) => {
   try {
-    const post = await adminCreateBlog(req.body);
+    const post = await adminCreateBinti(req.body);
     res.status(201).json({ post });
   } catch (e) {
     next(new AppError(e.message || "Cannot create", 503, { code: "SERVICE_UNAVAILABLE" }));
   }
 });
-adminCmsRouter.put("/blog/:id", async (req, res, next) => {
+adminCmsRouter.put("/binti/:id", async (req, res, next) => {
   try {
-    const post = await adminUpdateBlog(req.params.id, req.body);
+    const post = await adminUpdateBinti(req.params.id, req.body);
     if (!post) return next(new AppError("Not found", 404, { code: "NOT_FOUND" }));
     res.json({ post });
   } catch (e) {
     next(new AppError(e.message || "Cannot update", 503, { code: "SERVICE_UNAVAILABLE" }));
   }
 });
-adminCmsRouter.delete("/blog/:id", async (req, res, next) => {
+adminCmsRouter.delete("/binti/:id", async (req, res, next) => {
   try {
-    const post = await adminDeleteBlog(req.params.id);
+    const post = await adminDeleteBinti(req.params.id);
     if (!post) return next(new AppError("Not found", 404, { code: "NOT_FOUND" }));
     res.status(204).send();
   } catch (e) {
     next(new AppError(e.message || "Cannot delete", 503, { code: "SERVICE_UNAVAILABLE" }));
   }
 });
+
+// Contact Messages CRUD
+adminCmsRouter.get("/contact/messages", getContactMessages);
+adminCmsRouter.patch("/contact/messages/:id", patchContactMessage);
+adminCmsRouter.delete("/contact/messages/:id", deleteContactMessageHandler);
 
 
 

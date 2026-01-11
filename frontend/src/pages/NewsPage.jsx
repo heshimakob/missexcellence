@@ -8,7 +8,7 @@ import { PageShell } from "../ui/PageShell.jsx";
 import { apiUrl } from "../lib/api.js";
 
 function resolveImage(url) {
-  if (!url) return null;
+  if (!url) return "";
   if (/^https?:\/\//i.test(url)) return url;
   return apiUrl(url);
 }
@@ -27,7 +27,7 @@ export function NewsPage() {
     <PageShell
       eyebrow="Actualités"
       title="Toutes les actus"
-      subtitle="Une page prête à accueillir des articles complets (CMS via le backoffice)."
+      subtitle="Communiqués, annonces, événements et coulisses de Miss Excellence."
     >
       {loading ? <div className="text-sm text-ink-900/60">Chargement…</div> : null}
       <div className="mt-6 grid gap-4 md:grid-cols-2">
@@ -35,12 +35,19 @@ export function NewsPage() {
           <Link key={n.id} to={`/actualites/${n.slug}`} className="block">
             <Card className="group overflow-hidden p-0">
               <div className="relative aspect-[16/9] w-full overflow-hidden">
-                <img
-                  src={resolveImage(n.imageUrl)}
-                  alt={n.title}
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                  loading="lazy"
-                />
+                {n.imageUrl ? (
+                  <img
+                    src={resolveImage(n.imageUrl)}
+                    alt={n.title}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                    loading="lazy"
+                    onError={(e) => {
+                      e.target.style.display = "none";
+                      e.target.nextElementSibling?.classList.remove("hidden");
+                    }}
+                  />
+                ) : null}
+                <div className={`h-full w-full bg-gradient-to-tr from-neon-500/15 via-white/50 to-orchid-500/15 ${n.imageUrl ? "hidden" : ""}`} />
                 <div className="absolute inset-0 bg-gradient-to-t from-white/70 via-white/10 to-transparent" />
                 <div className="absolute left-4 top-4 flex items-center gap-2">
                   <Badge className="bg-white/80">{n.tag}</Badge>

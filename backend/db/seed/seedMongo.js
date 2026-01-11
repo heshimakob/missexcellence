@@ -1,9 +1,9 @@
 import { SiteContentModel } from "../models/SiteContent.js";
 import { NewsModel } from "../models/News.js";
-import { BlogPostModel } from "../models/BlogPost.js";
+import { BintiPostModel } from "../models/BintiPost.js";
 import { defaultSiteContent } from "./defaultSiteContent.js";
 import { newsItems } from "../../models/news.model.js";
-import { blogPosts } from "../../models/blog.model.js";
+import { bintiPosts } from "../../models/binti.model.js";
 
 export async function seedMongoIfEmpty() {
   const existingContent = await SiteContentModel.findOne({ key: "main" }).lean();
@@ -16,9 +16,9 @@ export async function seedMongoIfEmpty() {
     await NewsModel.insertMany(newsItems.map(stripIds));
   }
 
-  const blogCount = await BlogPostModel.countDocuments();
-  if (blogCount === 0) {
-    await BlogPostModel.insertMany(blogPosts.map(stripIds));
+  const bintiCount = await BintiPostModel.countDocuments();
+  if (bintiCount === 0) {
+    await BintiPostModel.insertMany(bintiPosts.map(stripIds));
   }
 }
 

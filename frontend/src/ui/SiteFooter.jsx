@@ -29,7 +29,7 @@ export function SiteFooter() {
               </div>
             </div>
             <p className="mt-4 text-sm leading-relaxed text-ink-900/60">
-              Design premium, contenus dynamiques, et backoffice moderne pour piloter la plateforme.
+              Promouvoir l'excellence, l'élégance et le leadership féminin à travers un concours engagé et impactant au service de la communauté.
             </p>
           </div>
 

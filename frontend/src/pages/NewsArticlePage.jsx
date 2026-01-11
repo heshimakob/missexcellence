@@ -11,7 +11,7 @@ import { Card } from "../ui/Card.jsx";
 import { Button } from "../ui/Button.jsx";
 
 function resolveImage(url) {
-  if (!url) return null;
+  if (!url) return "";
   if (/^https?:\/\//i.test(url)) return url;
   return apiUrl(url);
 }
@@ -80,10 +80,13 @@ export function NewsArticlePage() {
                     src={resolveImage(item.imageUrl)}
                     alt={item?.title ?? ""}
                     className="h-full w-full object-cover transition-transform duration-700"
+                    onError={(e) => {
+                      e.target.style.display = "none";
+                      e.target.nextElementSibling?.classList.remove("hidden");
+                    }}
                   />
-                ) : (
-                  <div className="h-full w-full bg-gradient-to-tr from-neon-500/15 via-white/50 to-orchid-500/15" />
-                )}
+                ) : null}
+                <div className={`h-full w-full bg-gradient-to-tr from-neon-500/15 via-white/50 to-orchid-500/15 ${item?.imageUrl ? "hidden" : ""}`} />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent" />
               </div>
               {item?.excerpt ? (
