@@ -8,6 +8,13 @@ const EnvSchema = z.object({
   ADMIN_EMAIL: z.string().email().default("admin@miss-excellence.local"),
   ADMIN_PASSWORD: z.string().min(8).default("ChangeMeNow!"),
   MONGO_URI: z.string().optional(),
+  // Email configuration (optional - if not set, emails won't be sent)
+  SMTP_HOST: z.string().optional(),
+  SMTP_PORT: z.coerce.number().int().positive().optional(),
+  SMTP_SECURE: z.coerce.boolean().default(false),
+  SMTP_USER: z.string().optional(),
+  SMTP_PASS: z.string().optional(),
+  SMTP_FROM: z.string().email().optional(),
 });
 
 const parsed = EnvSchema.safeParse(process.env);

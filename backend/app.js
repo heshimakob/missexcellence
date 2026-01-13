@@ -21,7 +21,7 @@ export function createApp() {
       contentSecurityPolicy: {
         directives: {
           defaultSrc: ["'self'"],
-          imgSrc: ["'self'", "data:", "http://localhost:3000", "https:"],
+          imgSrc: ["'self'", "data:", "https:", "http:"],
           scriptSrc: ["'self'"],
           styleSrc: ["'self'", "'unsafe-inline'", "https:"],
           fontSrc: ["'self'", "https:", "data:"],
@@ -32,7 +32,9 @@ export function createApp() {
   );
   app.use(
     cors({
-      origin: env.FRONTEND_ORIGIN,
+      origin: env.FRONTEND_ORIGIN.includes(",")
+        ? env.FRONTEND_ORIGIN.split(",").map((o) => o.trim())
+        : env.FRONTEND_ORIGIN,
       credentials: true,
     }),
   );

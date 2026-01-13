@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchSiteContent } from "../store/slices/publicSlice.js";
 import { apiFetch } from "../lib/api.js";
+import { SEO } from "../components/SEO.jsx";
 
 export function ContactPage() {
   const dispatch = useDispatch();
@@ -63,11 +64,17 @@ export function ContactPage() {
   }
 
   return (
-    <PageShell
-      eyebrow="Contact"
-      title={resolved.contact.title}
-      subtitle={resolved.contact.subtitle}
-    >
+    <>
+      <SEO
+        title="Contact"
+        description={resolved.contact.subtitle || "Contactez-nous pour toute question concernant Miss Excellence : presse, candidatures, coordination, partenariats."}
+        url="/contact"
+      />
+      <PageShell
+        eyebrow="Contact"
+        title={resolved.contact.title}
+        subtitle={resolved.contact.subtitle}
+      >
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
           <div className="flex items-center gap-2 text-sm font-semibold">
@@ -141,10 +148,10 @@ export function ContactPage() {
         </Card>
       </div>
     </PageShell>
+    </>
   );
 }
-
-function Field({ label, placeholder, value, onChange, type = "text", required = false }) {
+function Field({label, placeholder, value, onChange, type = "text", required = false}) {
   return (
     <label className="grid gap-1 text-sm">
       <span className="text-xs text-ink-900/60">
@@ -161,6 +168,4 @@ function Field({ label, placeholder, value, onChange, type = "text", required = 
       />
     </label>
   );
-}
-
-
+} 

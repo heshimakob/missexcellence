@@ -13,6 +13,7 @@ import { SectionHeading } from "../ui/SectionHeading.jsx";
 import { VideoBackground } from "../ui/VideoBackground.jsx";
 import { missExcellenceText } from "../content/missExcellenceText.js";
 import { apiUrl } from "../lib/api.js";
+import { SEO } from "../components/SEO.jsx";
 
 export function HomePage() {
   const dispatch = useDispatch();
@@ -42,11 +43,35 @@ export function HomePage() {
 
   function resolveImage(url) {
     if (!url) return "";
+
+    console.log("resolveImage input:", url);
+
     if (/^https?:\/\//i.test(url)) return url;
+
+    if (url.startsWith('/static')){
+      return apiUrl(url);
+    }
+
+    if (!url.includes('/') && url.includes('.')) {
+        return apiUrl(`/static/uploads/${url}`);
+    }
+
+     if (url.startsWith('/static/uploads/')) {
+        return apiUrl(url);
+    }
+    
     return apiUrl(url);
   }
 
+  const resolvedSubtitle = resolved?.home?.subtitle || "Concours Miss Excellence — L'élégance, le leadership et l'impact.";
+
   return (
+    <>
+      <SEO
+        title="Accueil"
+        description={resolvedSubtitle}
+        url="/"
+      />
     <div>
       <section className="relative overflow-hidden py-16 md:py-24">
         <Container className="relative z-10">
@@ -334,6 +359,7 @@ export function HomePage() {
         </Container>
       </section>
     </div>
+    </>
   );
 }
 

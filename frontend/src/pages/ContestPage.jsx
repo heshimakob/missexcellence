@@ -5,6 +5,7 @@ import { missExcellenceText } from "../content/missExcellenceText.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchSiteContent } from "../store/slices/publicSlice.js";
+import { SEO } from "../components/SEO.jsx";
 
 export function ContestPage() {
   const dispatch = useDispatch();
@@ -18,11 +19,17 @@ export function ContestPage() {
   const resolved = siteContent ?? missExcellenceText;
 
   return (
-    <PageShell
-      eyebrow="Le concours"
-      title={resolved.contest.title}
-      subtitle={resolved.contest.subtitle}
-    >
+    <>
+      <SEO
+        title="Le concours"
+        description={resolved.contest.subtitle}
+        url="/concours"
+      />
+      <PageShell
+        eyebrow="Le concours"
+        title={resolved.contest.title}
+        subtitle={resolved.contest.subtitle}
+      >
       <div className="grid gap-4">
         {resolved.contest.timeline.map((step) => (
           <Card key={step.title}>
@@ -63,6 +70,7 @@ export function ContestPage() {
         </Card>
       </div>
     </PageShell>
+    </>
   );
 }
 

@@ -6,10 +6,27 @@ import { Card } from "../ui/Card.jsx";
 import { Badge } from "../ui/Badge.jsx";
 import { PageShell } from "../ui/PageShell.jsx";
 import { apiUrl } from "../lib/api.js";
+import { SEO } from "../components/SEO.jsx";
 
 function resolveImage(url) {
   if (!url) return "";
+
+  console.log("resolveImage input:", url);
+
   if (/^https?:\/\//i.test(url)) return url;
+
+  if (url.startsWith('/static')) {
+    return apiUrl(url);
+  }
+
+  if (!url.includes('/') && url.includes('.')) {
+    return apiUrl(`/static/uploads/${url}`);
+  }
+
+  if (url.startsWith('/static/uploads/')) {
+    return apiUrl(url);
+  }
+
   return apiUrl(url);
 }
 
@@ -24,48 +41,59 @@ export function NewsPage() {
   }, [dispatch, status]);
 
   return (
-    <PageShell
-      eyebrow="Actualités"
-      title="Toutes les actus"
-      subtitle="Communiqués, annonces, événements et coulisses de Miss Excellence."
-    >
-      {loading ? <div className="text-sm text-ink-900/60">Chargement…</div> : null}
-      <div className="mt-6 grid gap-4 md:grid-cols-2">
-        {items.map((n) => (
-          <Link key={n.id} to={`/actualites/${n.slug}`} className="block">
-            <Card className="group overflow-hidden p-0">
-              <div className="relative aspect-[16/9] w-full overflow-hidden">
-                {n.imageUrl ? (
-                  <img
-                    src={resolveImage(n.imageUrl)}
-                    alt={n.title}
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                    loading="lazy"
-                    onError={(e) => {
-                      e.target.style.display = "none";
-                      e.target.nextElementSibling?.classList.remove("hidden");
-                    }}
-                  />
-                ) : null}
-                <div className={`h-full w-full bg-gradient-to-tr from-neon-500/15 via-white/50 to-orchid-500/15 ${n.imageUrl ? "hidden" : ""}`} />
-                <div className="absolute inset-0 bg-gradient-to-t from-white/70 via-white/10 to-transparent" />
-                <div className="absolute left-4 top-4 flex items-center gap-2">
-                  <Badge className="bg-white/80">{n.tag}</Badge>
-                  <div className="text-xs text-ink-900/60">{n.date}</div>
+    <>
+      <SEO
+        title="Actualités"
+        description="Communiqués, annonces, événements et coulisses de Miss Excellence."
+        url="/actualites"
+      />
+      <PageShell
+        eyebrow="Actualités"
+        title="Toutes les actus"
+        subtitle="Communiqués, annonces, événements et coulisses de Miss Excellence."
+      >
+        {loading ? <div className="text-sm text-ink-900/60">Chargement…</div> : null}
+        <div className="mt-6 grid gap-4 md:grid-cols-2">
+          {items.map((n) => (
+            <Link key={n.id} to={`/actualites/${n.slug}`} className="block">
+              <Card className="group overflow-hidden p-0">
+                <div className="relative aspect-[16/9] w-full overflow-hidden">
+                  <>
+                    {n.imageUrl ? (
+                      <img
+                        src={resolveImage(n.imageUrl)}
+                        alt={n.title}
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                        loading="lazy"
+                        onError={(e) => {
+                          e.target.style.display = "none";
+                          e.target.nextElementSibling?.classList.remove("hidden");
+                        }}
+                      />
+                    ) : null}
+                    <div className={`h-full w-full bg-gradient-to-tr from-neon-500/15 via-white/50 to-orchid-500/15 ${n.imageUrl ? "hidden" : ""}`} />
+                    <div className="absolute inset-0 bg-gradient-to-t from-white/70 via-white/10 to-transparent" />
+                    <div className="absolute left-4 top-4 flex items-center gap-2">
+                      <Badge className="bg-white/80">{n.tag}</Badge>
+                      <div className="text-xs text-ink-900/60">{n.date}</div>
+                    </div>
+                  </>
                 </div>
-              </div>
-              <div className="p-5">
-                <div className="text-lg font-semibold">{n.title}</div>
-                <p className="mt-2 text-sm leading-relaxed text-ink-900/60">{n.excerpt}</p>
-                <div className="mt-4 text-sm font-semibold text-ink-900/80 group-hover:text-ink-900">
-                  Lire plus →
+
+                <div className="p-5">
+                  <div className="text-lg font-semibold">{n.title}</div>
+                  <p className="mt-2 text-sm leading-relaxed text-ink-900/60">{n.excerpt}</p>
+                  <div className="mt-4 text-sm font-semibold text-ink-900/80 group-hover:text-ink-900">
+                    Lire plus →
+                  </div>
                 </div>
-              </div>
-            </Card>
-          </Link>
-        ))}
-      </div>
-    </PageShell>
+              </Card>
+            </Link>
+          ))}
+
+        </div>
+      </PageShell>
+    </>
   );
 }
 

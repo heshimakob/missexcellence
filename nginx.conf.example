@@ -1,0 +1,117 @@
+# Configuration Nginx pour Miss Excellence
+# À placer dans /etc/nginx/sites-available/missexcellence
+# Créer un lien symbolique : sudo ln -s /etc/nginx/sites-available/missexcellence /etc/nginx/sites-enabled/
+
+# Site public - www.missexcellence.org (ou missexcellence.org)
+server {
+    listen 80;
+    server_name www.missexcellence.org missexcellence.org;
+
+    # Redirection HTTPS (décommenter après avoir configuré SSL)
+    # return 301 https://$server_name$request_uri;
+
+    # Pour HTTPS (décommenter après avoir configuré SSL avec Let's Encrypt)
+    # listen 443 ssl http2;
+    # ssl_certificate /etc/letsencrypt/live/missexcellence.org/fullchain.pem;
+    # ssl_certificate_key /etc/letsencrypt/live/missexcellence.org/privkey.pem;
+
+    root /var/www/missexcellence/frontend/dist;
+    index index.html;
+
+    # Gzip compression
+    gzip on;
+    gzip_vary on;
+    gzip_min_length 1024;
+    gzip_types text/plain text/css text/xml text/javascript application/javascript application/xml+rss application/json;
+
+    # Serve les fichiers statiques
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # Cache pour les assets statiques
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+
+    # Proxy pour l'API backend
+    location /api {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    # Proxy pour les fichiers statiques du backend (images uploads, etc.)
+    location /static {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+# Admin - admin.missexcellence.org
+server {
+    listen 80;
+    server_name admin.missexcellence.org;
+
+    # Redirection HTTPS (décommenter après avoir configuré SSL)
+    # return 301 https://$server_name$request_uri;
+
+    # Pour HTTPS (décommenter après avoir configuré SSL)
+    # listen 443 ssl http2;
+    # ssl_certificate /etc/letsencrypt/live/admin.missexcellence.org/fullchain.pem;
+    # ssl_certificate_key /etc/letsencrypt/live/admin.missexcellence.org/privkey.pem;
+
+    root /var/www/missexcellence/frontend/dist;
+    index index.html;
+
+    # Gzip compression
+    gzip on;
+    gzip_vary on;
+    gzip_min_length 1024;
+    gzip_types text/plain text/css text/xml text/javascript application/javascript application/xml+rss application/json;
+
+    # Serve les fichiers statiques
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # Cache pour les assets statiques
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+
+    # Proxy pour l'API backend
+    location /api {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    # Proxy pour les fichiers statiques du backend
+    location /static {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}

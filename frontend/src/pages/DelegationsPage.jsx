@@ -6,6 +6,7 @@ import { missExcellenceText } from "../content/missExcellenceText.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchSiteContent } from "../store/slices/publicSlice.js";
+import { SEO } from "../components/SEO.jsx";
 
 export function DelegationsPage() {
   const dispatch = useDispatch();
@@ -19,11 +20,17 @@ export function DelegationsPage() {
   const resolved = siteContent ?? missExcellenceText;
 
   return (
-    <PageShell
-      eyebrow="Délégations"
-      title={resolved.delegations.title}
-      subtitle={resolved.delegations.subtitle}
-    >
+    <>
+      <SEO
+        title="Délégations"
+        description={resolved.delegations.subtitle}
+        url="/delegations"
+      />
+      <PageShell
+        eyebrow="Délégations"
+        title={resolved.delegations.title}
+        subtitle={resolved.delegations.subtitle}
+      >
       <div className="grid gap-4 md:grid-cols-3">
         {resolved.delegations.regions.map((d) => (
           <Card key={d.name} className="relative overflow-hidden">
@@ -47,6 +54,7 @@ export function DelegationsPage() {
         ))}
       </div>
     </PageShell>
+    </>
   );
 }
 

@@ -9,10 +9,27 @@ import { Container } from "../ui/Container.jsx";
 import { Badge } from "../ui/Badge.jsx";
 import { Card } from "../ui/Card.jsx";
 import { Button } from "../ui/Button.jsx";
+import { SEO } from "../components/SEO.jsx";
 
 function resolveImage(url) {
-  if (!url) return "";
+    if (!url) return "";
+
+    console.log("resolveImage input:", url);
+
   if (/^https?:\/\//i.test(url)) return url;
+
+    if (url.startsWith('/static')){
+      return apiUrl(url);
+    }
+
+    if (!url.includes('/') && url.includes('.')) {
+        return apiUrl(`/static/uploads/${url}`);
+    }
+
+     if (url.startsWith('/static/uploads/')) {
+        return apiUrl(url);
+    }
+    
   return apiUrl(url);
 }
 
@@ -49,7 +66,19 @@ export function NewsArticlePage() {
     );
   }
 
+  const articleTitle = item?.title || "Actualité";
+  const articleDescription = item?.excerpt || item?.content?.[0] || "Lire l'article complet sur Miss Excellence.";
+  const articleImage = item?.imageUrl ? resolveImage(item.imageUrl) : undefined;
+
   return (
+    <>
+      <SEO
+        title={articleTitle}
+        description={articleDescription}
+        image={articleImage}
+        url={`/actualites/${slug}`}
+        type="article"
+      />
     <div>
       <section className="py-10 md:py-14">
         <Container>
@@ -106,6 +135,7 @@ export function NewsArticlePage() {
         </Container>
       </section>
     </div>
+    </>
   );
 }
 

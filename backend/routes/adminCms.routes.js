@@ -33,8 +33,10 @@ const upload = multer({
 
 adminCmsRouter.post("/upload", upload.single("file"), (req, res, next) => {
   if (!req.file) return next(new AppError("Fichier manquant", 400, { code: "BAD_REQUEST" }));
-  const url = `/static/uploads/${req.file.filename}`;
-  res.status(201).json({ url });
+  
+ 
+  const filename = req.file.filename;
+  res.status(201).json({ url: filename });
 });
 
 // Site content (single JSON)

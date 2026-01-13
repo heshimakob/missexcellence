@@ -1,14 +1,21 @@
 import { FileText } from "lucide-react";
 import { PageShell } from "../ui/PageShell.jsx";
 import { Card } from "../ui/Card.jsx";
+import { SEO } from "../components/SEO.jsx";
 
 export function BintiPage() {
   return (
-    <PageShell
-      eyebrow="Binti"
-      title="Bientôt disponible"
-      subtitle="Un espace éditorial dédié aux actualités et contenus exclusifs de Miss Excellence."
-    >
+    <>
+      <SEO
+        title="Binti"
+        description="Un espace éditorial dédié aux actualités et contenus exclusifs de Miss Excellence."
+        url="/binti"
+      />
+      <PageShell
+        eyebrow="Binti"
+        title="Bientôt disponible"
+        subtitle="Un espace éditorial dédié aux actualités et contenus exclusifs de Miss Excellence."
+      >
       <Card className="flex items-center justify-between">
         <div>
           <div className="text-lg font-semibold">Contenu en préparation</div>
@@ -17,5 +24,6 @@ export function BintiPage() {
         <FileText className="size-6 text-ink-900/60" />
       </Card>
     </PageShell>
+    </>
   );
 }

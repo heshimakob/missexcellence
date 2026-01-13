@@ -6,6 +6,7 @@ import { missExcellenceText } from "../content/missExcellenceText.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchSiteContent } from "../store/slices/publicSlice.js";
+import { SEO } from "../components/SEO.jsx";
 
 export function PartnersPage() {
   const dispatch = useDispatch();
@@ -19,11 +20,17 @@ export function PartnersPage() {
   const resolved = siteContent ?? missExcellenceText;
 
   return (
-    <PageShell
-      eyebrow="Partenariats"
-      title={resolved.partners.title}
-      subtitle={resolved.partners.subtitle}
-    >
+    <>
+      <SEO
+        title="Partenariats"
+        description={resolved.partners.subtitle}
+        url="/partenariats"
+      />
+      <PageShell
+        eyebrow="Partenariats"
+        title={resolved.partners.title}
+        subtitle={resolved.partners.subtitle}
+      >
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <div className="flex items-center gap-2 text-sm font-semibold">
@@ -60,6 +67,7 @@ export function PartnersPage() {
         </Card>
       </div>
     </PageShell>
+    </>
   );
 }
 
