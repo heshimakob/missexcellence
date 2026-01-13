@@ -14,8 +14,8 @@ export function AdminLoginPage() {
   const location = useLocation();
   const from = location.state?.from || "/admin";
 
-  const [email, setEmail] = useState("admin@miss-excellence.local");
-  const [password, setPassword] = useState("ChangeMeNow!");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -60,6 +60,7 @@ export function AdminLoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   autoComplete="email"
+                  placeholder="admin@exemple.org"
                 />
               </div>
             </label>
@@ -74,6 +75,7 @@ export function AdminLoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   autoComplete="current-password"
+                  placeholder="........"
                 />
               </div>
             </label>
